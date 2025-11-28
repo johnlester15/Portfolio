@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>John Defensor Portfolio</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+  /* ===========================
+     GLOBAL
+  ============================ */
+  :root{
+    --glass-bg: rgba(255,255,255,0.06);
+    --accent: #8f70ff;
+    --accent-2: #5f41ff;
+    --glass-border: rgba(255,255,255,0.12);
+    --text: #ffffff;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #06070d;
+    color: var(--text);
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  h1,h2,h3,h4,h5{ font-family: 'Montserrat', sans-serif; }
+  a { color: inherit; text-decoration: none; }
+
+  /* SPLINE BACKGROUND */
+  .spline-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+  .spline-bg iframe { width:100%; height:100%; border:none; transform:scale(1.15); opacity:0.55; pointer-events:none; }
+
+  /* NAVBAR */
+  .navbar {
+    padding: 15px 0;
+    backdrop-filter: blur(12px);
+    background: rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .navbar-brand { font-weight:700; color:#fff !important; font-size:1.2rem; }
+  .nav-link { color:#fff !important; font-weight:500; margin-left:1rem; transition:.25s; }
+  .nav-link:hover { color: var(--accent) !important; text-shadow: 0 0 8px var(--accent); }
+
+  /* HERO */
+  #hero { min-height:100vh; display:flex; align-items:center; padding-top:120px; padding-bottom:60px; }
+  .hero-title { font-size: clamp(2rem, 6vw, 4rem); line-height:1.05; font-weight:800; margin-bottom:.25rem; }
+  .hero-sub { font-size: clamp(.9rem, 2.5vw, 1.1rem); opacity:.85; margin-bottom:18px;}
+
+  /* Typing effect */
+  .typed-text {
+    display: inline-block;
+    vertical-align: bottom;
+    min-width: 12ch; /* reserve width to prevent layout jump */
+  }
+  .typed-text::after {
+    content: "";
+    display: inline-block;
+    width: 0.5ch;
+    background-color: #fff;
+    margin-left: 4px;
+    animation: blink 1s steps(1, end) infinite;
+    vertical-align: bottom;
+  }
+  @keyframes blink { 50% { background-color: transparent; } }
+
+  /* Profile image */
+  .about-img {
+  width: 400px; /* bigger than before */
+  max-width: 100%;
+  border-radius: 50%;
+  border: 4px solid rgba(143,112,255,0.18);
+  box-shadow: 0 0 60px rgba(143,112,255,0.45);
+  animation: floaty 2s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes floaty {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); } /* slightly more float */
+  100% { transform: translateY(0); }
+}
+
+/* Small screens */
+@media (max-width: 768px){
+  .about-img { width: 60%; margin-top: 25px; }
+}
+
+
+  .cta-btn { padding:10px 22px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); border:none; border-radius:10px; color:#fff; font-weight:600; box-shadow:0 0 18px rgba(143,112,255,0.35); }
+
+  /* ABOUT */
+  #about { padding:90px 0; }
+  .about-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 28px;
+    backdrop-filter: blur(8px);
+  }
+  .about-cards .mini-card {
+    background: rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.06);
+    padding:16px;
+    border-radius:12px;
+    margin-bottom:12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  /* SERVICES */
+  .service-card {
+    background: rgba(255,255,255,0.04);
+    padding: 26px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    transition: transform .35s, box-shadow .35s;
+  }
+  .service-card:hover { transform: translateY(-8px); box-shadow:0 0 18px rgba(143,112,255,0.25); }
+
+  /* SKILLS PANEL */
+  .skills-wrap {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+  .skills-panel {
+    display: flex;
+    gap: 20px;
+    animation: slideSkills 18s linear infinite;
+    width: max-content;
+  }
+  @keyframes slideSkills {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .skill {
+    min-width:240px;
+    height:240px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border-radius:18px;
+    background: rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.04);
+    transition: transform .45s, box-shadow .45s, opacity .3s;
+    font-weight:700;
+    text-align:center;
+    padding:12px;
+    cursor:default;
+    user-select:none;
+  }
+  .skill i { font-size:42px; margin-bottom:8px; }
+  .skill .label { font-size:1rem; margin-top:6px; opacity:.95; }
+  .skill.active {
+    transform: scale(1.32);
+    box-shadow: 0 10px 40px rgba(95,65,255,0.18);
+    background: linear-gradient(135deg, rgba(143,112,255,0.08), rgba(95,65,255,0.06));
+  }
+
+  /* Small screens */
+  @media (max-width: 768px){
+    .skill { min-width:110px; height:110px; }
+    .skill i { font-size:32px; }
+    .skill.active { transform: scale(1.15); }
+    .about-img { max-width:50%; margin-top:25px; }
+  }
+
+  /* PORTFOLIO */
+  .portfolio-item { position:relative; border-radius:20px; overflow:hidden; transition:.25s; }
+  .portfolio-item img { width:100%; display:block; border-radius:15px; }
+
+  /* EDUCATION */
+  #education { padding:60px 0; }
+  .edu-card {
+    background: rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.06);
+    padding:18px;
+    border-radius:14px;
+    text-align:center;
+    transition: transform .4s, box-shadow .4s;
+  }
+
+  /* CONTACT */
+  .contact-form input, .contact-form textarea {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    border-radius:10px;
+    padding:12px;
+  }
+  .send-btn { background: var(--accent); color:#fff; padding:12px; border-radius:10px; border:none; width:100%; box-shadow:0 0 15px rgba(143,112,255,0.24); }
+
+  footer { padding: 25px 0; margin-top: 60px; background: rgba(255,255,255,0.03); backdrop-filter: blur(8px); }
+
+  /* ENTRY ANIMATIONS (scroll) */
+  .reveal { opacity: 0; transform: translateX(-40px); transition: opacity .6s ease-out, transform .6s ease-out; will-change: transform, opacity; }
+  .reveal.revealed { opacity: 1; transform: translateX(0); }
+  .reveal[data-direction="right"] { transform: translateX(40px); }
+  .reveal.revealed[data-direction="right"] { transform: translateX(0); }
+
+  /* little utility */
+  .mt-6 { margin-top:1.6rem; }
+  .mb-6 { margin-bottom:1.6rem; }
+</style>
+
+</head>
+<body>
+
+  <!-- SPLINE BACKGROUND -->
+  <div class="spline-bg">
+    <iframe src="https://my.spline.design/orb-N6v9mqNYBtkJ5SYl63z0MIwB/"></iframe>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand">John Defensor</a>
+
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#education">Education</a></li>
+          <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" class="container py-5">
+  <div class="row align-items-center">
+
+    <!-- LEFT COLUMN: Text -->
+    <div class="col-md-7 text-md-start text-center">
+      <h1 class="hero-title reveal" data-direction="left">
+        Hi, I'm <span id="typed" class="typed-text"></span>
+      </h1>
+
+      <p class="hero-sub reveal" data-direction="left">
+        UI/UX Designer • Frontend Enthusiast
+      </p>
+
+      <div class="mt-4 reveal" data-direction="left">
+        <a href="#" class="me-3"><i class="fab fa-instagram fa-2x"></i></a>
+        <a href="#" class="me-3"><i class="fab fa-facebook fa-2x"></i></a>
+        <a href="#"><i class="fab fa-github fa-2x"></i></a>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Profile Image -->
+    <div class="col-md-5 text-center text-md-end reveal" data-direction="right">
+      <img src="john.png" alt="John Defensor" class="about-img">
+    </div>
+
+  </div>
+</section>
+
+
+
+  <!-- ABOUT -->
+  <section id="about" class="container">
+    <div class="about-panel reveal" data-direction="left">
+      <div class="row align-items-center">
+
+        <div class="col-lg-7">
+          <h2 class="mb-3">About Me</h2>
+          <p class="lead">
+            I am a passionate developer who loves creating websites that are both beautiful and easy to use.
+            I enjoy designing clean, modern interfaces and adding smooth animations that make the user experience feel natural and engaging.
+            I focus on building web experiences that are not only visually stunning but also fast, responsive, and enjoyable for everyone.
+          </p>
+
+          <div class="mt-3">
+            <a class="cta-btn me-2" href="#">View Work</a>
+            <a class="cta-btn" href="#contact">Contact Me</a>
+          </div>
+        </div>
+
+        <div class="col-lg-5 mt-4 mt-lg-0 about-cards">
+
+          <div class="mini-card reveal" data-direction="right">
+            <div class="mini-card-inner d-flex align-items-start gap-3">
+              <i class="fas fa-briefcase fa-2x" style="color:var(--accent)"></i>
+              <div>
+                <h5>Experience</h5>
+                <small>Frontend & UI/UX projects</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-card reveal" data-direction="right">
+            <div class="mini-card-inner d-flex align-items-start gap-3">
+              <i class="fas fa-lightbulb fa-2x" style="color:var(--accent)"></i>
+              <div>
+                <h5>Design Mindset</h5>
+                <small>Human-centered interfaces</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-card reveal" data-direction="right">
+            <div class="mini-card-inner d-flex align-items-start gap-3">
+              <i class="fas fa-rocket fa-2x" style="color:var(--accent)"></i>
+              <div>
+                <h5>Performance</h5>
+                <small>Optimized & responsive</small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section>
+    <div class="skills-wrap mt-6 reveal" data-direction="left">
+      <div class="skills-panel">
+
+        <!-- Loop 1 -->
+        <div class="skill"><i class="fab fa-html5"></i><div class="label">HTML</div></div>
+        <div class="skill"><i class="fab fa-css3-alt"></i><div class="label">CSS</div></div>
+        <div class="skill"><i class="fab fa-js-square"></i><div class="label">JavaScript</div></div>
+        <div class="skill"><i class="fab fa-java"></i><div class="label">Java</div></div>
+        <div class="skill"><i class="fab fa-android"></i><div class="label">Android Studio</div></div>
+        <div class="skill"><div style="font-size:36px;font-weight:900">TS</div><div class="label">TypeScript</div></div>
+        <div class="skill"><i class="fab fa-python"></i><div class="label">Python</div></div>
+        <div class="skill"><div style="font-size:28px;font-weight:900">C++</div><div class="label">C++</div></div>
+
+        <!-- Loop 2 -->
+        <div class="skill"><i class="fab fa-html5"></i><div class="label">HTML</div></div>
+        <div class="skill"><i class="fab fa-css3-alt"></i><div class="label">CSS</div></div>
+        <div class="skill"><i class="fab fa-js-square"></i><div class="label">JavaScript</div></div>
+        <div class="skill"><i class="fab fa-java"></i><div class="label">Java</div></div>
+        <div class="skill"><i class="fab fa-android"></i><div class="label">Android Studio</div></div>
+        <div class="skill"><div style="font-size:36px;font-weight:900">TS</div><div class="label">TypeScript</div></div>
+        <div class="skill"><i class="fab fa-python"></i><div class="label">Python</div></div>
+        <div class="skill"><div style="font-size:28px;font-weight:900">C++</div><div class="label">C++</div></div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="container my-5">
+    <h2 class="text-center mb-5 reveal" data-direction="left">Services</h2>
+
+    <div class="row g-4">
+
+      <div class="col-md-4 reveal" data-direction="left">
+        <div class="service-card text-center">
+          <i class="fas fa-code fa-3x mb-3"></i>
+          <h4>Web Development</h4>
+          <p>Responsive, fast & modern websites</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 reveal" data-direction="right">
+        <div class="service-card text-center">
+          <i class="fas fa-pencil-ruler fa-3x mb-3"></i>
+          <h4>UI/UX Design</h4>
+          <p>Clean, elegant & user-friendly interfaces</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 reveal" data-direction="left">
+        <div class="service-card text-center">
+          <i class="fas fa-mobile-alt fa-3x mb-3"></i>
+          <h4>App Development</h4>
+          <p>Mobile-responsive & scalable apps</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="container my-5">
+    <h2 class="text-center mb-4 reveal" data-direction="left">Education</h2>
+
+    <div class="row g-4">
+      <div class="col-md-3 reveal" data-direction="left">
+        <div class="edu-card">
+          <h5>Junior High</h5>
+          <p>Basic education</p>
+        </div>
+      </div>
+
+      <div class="col-md-3 reveal" data-direction="right">
+        <div class="edu-card">
+          <h5>High School</h5>
+          <p>Secondary education</p>
+        </div>
+      </div>
+
+      <div class="col-md-3 reveal" data-direction="left">
+        <div class="edu-card">
+          <h5>Senior High</h5>
+          <p>Specialized track</p>
+        </div>
+      </div>
+
+      <div class="col-md-3 reveal" data-direction="right">
+        <div class="edu-card">
+          <h5>College</h5>
+          <p>Degree / tertiary education</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio" class="container my-5">
+    <h2 class="text-center mb-4 reveal" data-direction="left">Projects</h2>
+
+    <div class="row g-4">
+
+      <div class="col-md-4 reveal" data-direction="left">
+        <div class="portfolio-item">
+          <div class="image-wrapper position-relative">
+            <a href="https://digicoprjct2.vercel.app/" target="_blank">
+              <img src="pic1.png" class="img-fluid" alt="">
+              <div class="overlay">Click Me</div>
+            </a>
+          </div>
+          <h5 class="mt-3">Project One</h5>
+          <p>Modern responsive website</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 reveal" data-direction="right">
+        <div class="portfolio-item">
+          <div class="image-wrapper position-relative">
+            <a href="https://adv-final-project-opal.vercel.app/" target="_blank">
+              <img src="pic2.png" class="img-fluid" alt="">
+              <div class="overlay">Click Me</div>
+            </a>
+          </div>
+          <h5 class="mt-3">Project Two</h5>
+          <p>UI/UX design showcase</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 reveal" data-direction="left">
+        <div class="portfolio-item">
+          <div class="image-wrapper position-relative">
+            <a href="https://hci-project-five.vercel.app/" target="_blank">
+              <img src="pic3.png" class="img-fluid" alt="">
+              <div class="overlay">Click Me</div>
+            </a>
+          </div>
+          <h5 class="mt-3">Project Three</h5>
+          <p>App development project</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section id="journal" class="container my-5">
+    <h2 class="text-center mb-4 reveal" data-direction="left">
+      Educational Tour Journal (Cebu - Bohol)
+    </h2>
+
+    <div class="row mt-4">
+      <div class="col-md-6 reveal" data-direction="left">
+        <h4>Day 1 — Cebu Tech Tour</h4>
+        <p>Visited IT parks, tech companies, and UX studios.</p>
+      </div>
+
+      <div class="col-md-6 reveal" data-direction="right">
+        <h4>Day 2 — Bohol Exploration</h4>
+        <p>Immersive learning, culture, and industry insights.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="container my-5 text-center">
+    <h2 class="mb-4 reveal" data-direction="left">Contact</h2>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6 reveal" data-direction="right">
+        <form class="contact-form">
+          <input class="form-control mb-3" type="text" placeholder="Your Name" />
+          <input class="form-control mb-3" type="email" placeholder="Your Email" />
+          <textarea class="form-control mb-3" rows="4" placeholder="Your Message"></textarea>
+          <button class="send-btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-center">
+    <p>© 2025 John Defensor — All Rights Reserved</p>
+  </footer>
+
+</body>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // -----------------------------------------------------
+  // HERO TYPING LOOP EFFECT
+  // -----------------------------------------------------
+  (function () {
+  const text = "John Defensor";
+  const el = document.getElementById("typed");
+  let i = 0;
+  let forward = true;
+
+  el.style.display = "inline-block";
+  el.style.whiteSpace = "nowrap";
+
+  function loopTyping() {
+    if (forward) {
+      el.textContent += text.charAt(i);
+      i++;
+      if (i === text.length) {
+        forward = false;
+        setTimeout(loopTyping, 1000);
+        return;
+      }
+    } else {
+      el.textContent = text.substring(0, i - 1);
+      i--;
+      if (i === 0) forward = true;
+    }
+    setTimeout(loopTyping, forward ? 100 : 50);
+  }
+
+  setTimeout(loopTyping, 600);
+})();
+
+
+  // -----------------------------------------------------
+  // REVEAL ON SCROLL
+  // -----------------------------------------------------
+  (function () {
+    const reveals = document.querySelectorAll(".reveal");
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    reveals.forEach((r) => obs.observe(r));
+
+    window.addEventListener("load", () => {
+      reveals.forEach((r) => {
+        if (r.getBoundingClientRect().top < window.innerHeight) {
+          r.classList.add("revealed");
+        }
+      });
+    });
+  })();
+
+  // -----------------------------------------------------
+  // SKILLS AUTO-CYCLE
+  // -----------------------------------------------------
+  (function () {
+    const skills = Array.from(document.querySelectorAll(".skill"));
+    let index = 0;
+    let interval = null;
+    const panel = document.querySelector(".skills-panel"); // updated: select the correct panel
+
+    const setActive = (idx) => {
+      skills.forEach((s, i) => {
+        s.classList.toggle("active", i === idx);
+        s.style.opacity = i === idx ? "1" : "0.85";
+      });
+
+      const panelRect = panel.getBoundingClientRect();
+      const activeEl = skills[idx];
+      const actRect = activeEl.getBoundingClientRect();
+
+      const offset =
+        actRect.left - (panelRect.left + panelRect.width / 2 - actRect.width / 2);
+
+      panel.scrollBy({ left: offset, behavior: "smooth" });
+    };
+
+    function startCycle() {
+      interval = setInterval(() => {
+        index = (index + 1) % skills.length;
+        setActive(index);
+      }, 2000);
+    }
+
+    function stopCycle() {
+      clearInterval(interval);
+      interval = null;
+    }
+
+    setActive(index);
+    startCycle();
+
+    panel.addEventListener("mouseenter", stopCycle);
+    panel.addEventListener("mouseleave", () => {
+      if (!interval) startCycle();
+    });
+
+    skills.forEach((s, i) => {
+      s.addEventListener("click", () => {
+        index = i;
+        setActive(index);
+      });
+      s.setAttribute("tabindex", "0");
+
+      s.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          index = i;
+          setActive(index);
+        }
+      });
+    });
+  })();
+
+  // -----------------------------------------------------
+  // REVEAL ON LOAD
+  // -----------------------------------------------------
+  window.addEventListener("load", () => {
+    const reveals = document.querySelectorAll(".reveal");
+    reveals.forEach((r) => {
+      const rect = r.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 40) r.classList.add("revealed");
+    });
+  });
+</script>
+
+</body>
+</html>
