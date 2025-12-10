@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Educational Tour - John Defensor</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* ===========================
+       GLOBAL
+    ============================ */
+    :root{
+      --glass-bg: rgba(255,255,255,0.06);
+      --accent: #8f70ff;
+      --accent-2: #5f41ff;
+      --glass-border: rgba(255,255,255,0.12);
+      --text: #ffffff;
+    }
+
+    /* PAGE ENTRANCE ANIMATION - CLOUDS & COCONUT TREES */
+    @keyframes slideInFromLeft {
+      from {
+        transform: translateX(-100vw);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInFromRight {
+      from {
+        transform: translateX(100vw);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .entrance-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      pointer-events: none;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .entrance-overlay-left {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 50vw;
+      height: 100vh;
+      background: linear-gradient(to right, rgba(6,7,13,0.95), transparent);
+      animation: slideOutLeft 1.2s cubic-bezier(0.65, 0.05, 0.36, 1) forwards;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .entrance-overlay-right {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50vw;
+      height: 100vh;
+      background: linear-gradient(to left, rgba(6,7,13,0.95), transparent);
+      animation: slideOutRight 1.2s cubic-bezier(0.65, 0.05, 0.36, 1) forwards;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    @keyframes slideOutLeft {
+      0% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(-100vw); opacity: 0; }
+    }
+
+    @keyframes slideOutRight {
+      0% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(100vw); opacity: 0; }
+    }
+
+    /* REALISTIC CLOUDS - Full Screen Coverage - 50 CLOUDS */
+    .cloud {
+      position: absolute;
+      background: radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.4) 70%);
+      border-radius: 50%;
+      opacity: 0.85;
+      filter: blur(15px);
+      box-shadow: -20px -20px 40px rgba(0,0,0,0.2), inset -10px -10px 20px rgba(0,0,0,0.1);
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      background: radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.3) 75%);
+      border-radius: 50%;
+      filter: blur(12px);
+    }
+
+    /* Cloud size variations */
+    .cloud-sm {
+      width: 120px;
+      height: 50px;
+    }
+
+    .cloud-sm::before {
+      width: 50px;
+      height: 50px;
+      top: -20px;
+      left: 20px;
+    }
+
+    .cloud-sm::after {
+      width: 60px;
+      height: 40px;
+      top: -15px;
+      right: -15px;
+    }
+
+    .cloud-md {
+      width: 200px;
+      height: 80px;
+    }
+
+    .cloud-md::before {
+      width: 80px;
+      height: 80px;
+      top: -35px;
+      left: 40px;
+    }
+
+    .cloud-md::after {
+      width: 90px;
+      height: 70px;
+      top: -30px;
+      right: -25px;
+    }
+
+    .cloud-lg {
+      width: 300px;
+      height: 120px;
+    }
+
+    .cloud-lg::before {
+      width: 120px;
+      height: 120px;
+      top: -50px;
+      left: 60px;
+    }
+
+    .cloud-lg::after {
+      width: 140px;
+      height: 100px;
+      top: -45px;
+      right: -40px;
+    }
+
+    .cloud-xl {
+      width: 400px;
+      height: 160px;
+    }
+
+    .cloud-xl::before {
+      width: 160px;
+      height: 160px;
+      top: -65px;
+      left: 80px;
+    }
+
+    .cloud-xl::after {
+      width: 180px;
+      height: 140px;
+      top: -60px;
+      right: -50px;
+    }
+
+    /* Floating animations with different timings */
+    @keyframes float1 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+    @keyframes float2 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+    @keyframes float3 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    @keyframes float4 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-25px); } }
+    @keyframes float5 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+
+    /* RESPONSIVE - Tablet (768px - 1024px) */
+    @media (max-width: 1024px) {
+      .cloud-sm {
+        width: 90px;
+        height: 38px;
+      }
+
+      .cloud-sm::before {
+        width: 38px;
+        height: 38px;
+        top: -15px;
+        left: 15px;
+      }
+
+      .cloud-sm::after {
+        width: 45px;
+        height: 30px;
+        top: -12px;
+        right: -12px;
+      }
+
+      .cloud-md {
+        width: 150px;
+        height: 60px;
+      }
+
+      .cloud-md::before {
+        width: 60px;
+        height: 60px;
+        top: -26px;
+        left: 30px;
+      }
+
+      .cloud-md::after {
+        width: 68px;
+        height: 52px;
+        top: -22px;
+        right: -19px;
+      }
+
+      .cloud-lg {
+        width: 225px;
+        height: 90px;
+      }
+
+      .cloud-lg::before {
+        width: 90px;
+        height: 90px;
+        top: -37px;
+        left: 45px;
+      }
+
+      .cloud-lg::after {
+        width: 105px;
+        height: 75px;
+        top: -34px;
+        right: -30px;
+      }
+
+      .cloud-xl {
+        width: 300px;
+        height: 120px;
+      }
+
+      .cloud-xl::before {
+        width: 120px;
+        height: 120px;
+        top: -49px;
+        left: 60px;
+      }
+
+      .cloud-xl::after {
+        width: 135px;
+        height: 105px;
+        top: -45px;
+        right: -37px;
+      }
+    }
+
+    /* RESPONSIVE - Mobile Landscape (576px - 768px) */
+    @media (max-width: 768px) {
+      .cloud-sm {
+        width: 70px;
+        height: 28px;
+      }
+
+      .cloud-sm::before {
+        width: 28px;
+        height: 28px;
+        top: -11px;
+        left: 12px;
+      }
+
+      .cloud-sm::after {
+        width: 33px;
+        height: 23px;
+        top: -9px;
+        right: -9px;
+      }
+
+      .cloud-md {
+        width: 115px;
+        height: 46px;
+      }
+
+      .cloud-md::before {
+        width: 46px;
+        height: 46px;
+        top: -20px;
+        left: 23px;
+      }
+
+      .cloud-md::after {
+        width: 52px;
+        height: 40px;
+        top: -17px;
+        right: -14px;
+      }
+
+      .cloud-lg {
+        width: 170px;
+        height: 68px;
+      }
+
+      .cloud-lg::before {
+        width: 68px;
+        height: 68px;
+        top: -28px;
+        left: 34px;
+      }
+
+      .cloud-lg::after {
+        width: 79px;
+        height: 57px;
+        top: -26px;
+        right: -23px;
+      }
+
+      .cloud-xl {
+        width: 225px;
+        height: 90px;
+      }
+
+      .cloud-xl::before {
+        width: 90px;
+        height: 90px;
+        top: -37px;
+        left: 45px;
+      }
+
+      .cloud-xl::after {
+        width: 102px;
+        height: 79px;
+        top: -34px;
+        right: -28px;
+      }
+    }
+
+    /* RESPONSIVE - Mobile Small (320px - 576px) */
+    @media (max-width: 576px) {
+      .cloud-sm {
+        width: 50px;
+        height: 20px;
+      }
+
+      .cloud-sm::before {
+        width: 20px;
+        height: 20px;
+        top: -8px;
+        left: 8px;
+      }
+
+      .cloud-sm::after {
+        width: 24px;
+        height: 16px;
+        top: -6px;
+        right: -6px;
+      }
+
+      .cloud-md {
+        width: 80px;
+        height: 32px;
+      }
+
+      .cloud-md::before {
+        width: 32px;
+        height: 32px;
+        top: -14px;
+        left: 16px;
+      }
+
+      .cloud-md::after {
+        width: 36px;
+        height: 28px;
+        top: -12px;
+        right: -10px;
+      }
+
+      .cloud-lg {
+        width: 120px;
+        height: 48px;
+      }
+
+      .cloud-lg::before {
+        width: 48px;
+        height: 48px;
+        top: -20px;
+        left: 24px;
+      }
+
+      .cloud-lg::after {
+        width: 55px;
+        height: 40px;
+        top: -18px;
+        right: -16px;
+      }
+
+      .cloud-xl {
+        width: 160px;
+        height: 64px;
+      }
+
+      .cloud-xl::before {
+        width: 64px;
+        height: 64px;
+        top: -26px;
+        left: 32px;
+      }
+
+      .cloud-xl::after {
+        width: 72px;
+        height: 56px;
+        top: -24px;
+        right: -20px;
+      }
+
+      @keyframes float1 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+      @keyframes float2 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+      @keyframes float3 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+      @keyframes float4 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+      @keyframes float5 { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-7px); } }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: rotate(0deg) translateY(0px); }
+      50% { transform: rotate(1deg) translateY(-10px); }
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #06070d;
+      color: var(--text);
+      overflow-x: hidden !important;
+      position: relative;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      width: 100%;
+      max-width: 100vw;
+    }
+
+    html {
+      overflow-x: hidden !important;
+      width: 100%;
+      max-width: 100vw;
+    }
+
+    h1,h2,h3,h4,h5{ font-family: 'Montserrat', sans-serif; }
+    a { color: inherit; text-decoration: none; }
+
+    /* SPLINE BACKGROUND */
+    .spline-bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .spline-bg iframe { width:100%; height:100%; border:none; transform:scale(1.15); opacity:0.55; pointer-events:none; }
+
+    /* NAVBAR */
+    .navbar {
+      padding: 15px 0;
+      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .navbar-brand { font-weight:700; color:#fff !important; font-size:1.2rem; }
+    .nav-link { color:#fff !important; font-weight:500; margin-left:1rem; transition:.25s; }
+    .nav-link:hover { color: var(--accent) !important; text-shadow: 0 0 8px var(--accent); }
+
+    /* PAGE HERO */
+    #tour-hero { min-height:100vh; display:flex; align-items:center; justify-content:center; padding-top:120px; padding-bottom:120px; }
+    .tour-hero-title { font-size: clamp(2rem, 6vw, 4rem); line-height:1.05; font-weight:800; margin-bottom:.5rem; }
+    .tour-hero-sub { font-size: clamp(.9rem, 2.5vw, 1.1rem); opacity:.85; margin-bottom:18px;}
+
+    /* JOURNAL BOOK SECTION */
+    #journal-book { padding:90px 0; }
+    .journal-header { text-align: center; margin-bottom: 50px; }
+    .book-section-title { font-size: 2.5rem; margin-bottom: 12px; text-align: center; font-weight: 800; }
+    .journal-subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin: 0; font-weight: 400; letter-spacing: 0.5px; }
+    .book-images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 60px;
+    }
+    .book-image-card {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      transition: transform .35s, box-shadow .35s;
+      cursor: pointer;
+    }
+    .book-image-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 25px rgba(143,112,255,0.25);
+    }
+    .book-image-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* TOUR DAYS SECTION */
+    #tour-days { padding:90px 0; }
+    .days-title { font-size: 2.5rem; margin-bottom: 50px; text-align: center; font-weight: 800; }
+    .day-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 32px;
+      backdrop-filter: blur(8px);
+      margin-bottom: 30px;
+      transition: all .35s;
+    }
+    .day-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(143,112,255,0.2);
+    }
+    .day-number {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+    .day-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    .day-card p {
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+    .day-highlights {
+      background: rgba(255,255,255,0.03);
+      padding: 18px;
+      border-radius: 12px;
+      border-left: 3px solid var(--accent);
+      margin-top: 18px;
+    }
+    .day-highlights h5 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+    .day-highlights ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .day-highlights li {
+      padding: 6px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 0.95rem;
+      opacity: 0.85;
+    }
+    .day-highlights li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .day-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .day-image-thumb {
+      width: 100%;
+      height: 150px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .day-image-thumb:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(143,112,255,0.2);
+    }
+    .day-image-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* GALLERY SECTION */
+    #tour-gallery { padding:90px 0; }
+    .gallery-title { font-size: 2.5rem; margin-bottom: 50px; text-align: center; font-weight: 800; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform .35s, box-shadow .35s;
+    }
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(143,112,255,0.3);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+      transition: transform .35s;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity .35s;
+    }
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+    .gallery-overlay i {
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    /* MODALS */
+    #blur-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9990;
+      backdrop-filter: blur(30px) brightness(0.7);
+      -webkit-backdrop-filter: blur(30px) brightness(0.7);
+      pointer-events: none;
+      display: none;
+    }
+
+    .modal-backdrop.show {
+      backdrop-filter: blur(30px) brightness(0.55) saturate(1.2) !important;
+      -webkit-backdrop-filter: blur(30px) brightness(0.55) saturate(1.2) !important;
+      background-color: rgba(0, 0, 0, 0.45) !important;
+    }
+
+    .modal {
+      z-index: 10000 !important;
+    }
+
+    .tour-modal .modal-content {
+      background: rgba(255, 255, 255, 0.12) !important;
+      backdrop-filter: blur(35px) saturate(1.8) !important;
+      -webkit-backdrop-filter: blur(35px) saturate(1.8) !important;
+      border-radius: 22px !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 0 40px rgba(255, 255, 255, 0.25);
+      padding: 18px;
+      animation: modalPop 0.25s ease-out;
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .tour-modal img {
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0px 8px 30px rgba(0,0,0,0.4);
+      animation: zoomIn 0.25s ease-out;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* REVEAL ON SCROLL */
+    .reveal { opacity: 0; transform: translateX(-40px); transition: opacity .6s ease-out, transform .6s ease-out; will-change: transform, opacity; }
+    .reveal.revealed { opacity: 1; transform: translateX(0); }
+    .reveal[data-direction="right"] { transform: translateX(40px); }
+    .reveal.revealed[data-direction="right"] { transform: translateX(0); }
+
+    /* UTILITIES */
+    .mt-6 { margin-top: 1.6rem; }
+    .mb-6 { margin-bottom: 1.6rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .container {
+        max-width: 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body, html {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+      }
+      
+      .container {
+        max-width: 100% !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      [class*="col-"] {
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+      }
+
+      .tour-hero-title { 
+        font-size: 1.8rem !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+      }
+      
+      .tour-hero-sub { 
+        font-size: 0.85rem !important;
+      }
+      
+      .book-section-title,
+      .days-title,
+      .gallery-title { 
+        font-size: 1.6rem !important;
+        word-wrap: break-word !important;
+      }
+      
+      .day-card { 
+        padding: 15px !important;
+        margin: 0 auto !important;
+      }
+      
+      .day-card h3 {
+        font-size: 1.2rem !important;
+      }
+      
+      .day-card p {
+        font-size: 0.95rem !important;
+      }
+      
+      .day-number {
+        font-size: 0.8rem !important;
+      }
+      
+      .day-highlights {
+        padding: 12px !important;
+      }
+      
+      .day-highlights h5 {
+        font-size: 0.9rem !important;
+      }
+      
+      .day-highlights li {
+        font-size: 0.9rem !important;
+      }
+      .day-card h3 { font-size: 1.3rem; }
+      .book-images-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+      }
+      .book-image-card img { height: 220px; }
+      .day-images {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+      }
+      .day-image-thumb { height: 120px; }
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+      }
+      .gallery-item img { height: 200px; }
+    }
+  </style>
+
+</head>
+<body>
+  <div id="blur-overlay"></div>
+
+  <!-- ENTRANCE ANIMATION OVERLAY - 50 CLOUDS -->
+  <div class="entrance-overlay" id="entranceOverlay">
+    <div class="entrance-overlay-left">
+      <!-- 25 clouds on left side -->
+      <div class="cloud cloud-xl" style="top: 5%; left: -100px; animation: float1 5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 15%; left: -80px; animation: float2 6s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 25%; left: -60px; animation: float3 7s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 35%; left: -40px; animation: float4 5.5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 45%; left: -90px; animation: float5 6.5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 55%; left: -50px; animation: float1 7s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 65%; left: -30px; animation: float2 5.8s ease-in-out infinite;"></div>
+      <div class="cloud cloud-xl" style="top: 75%; left: -110px; animation: float3 6.2s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 85%; left: -70px; animation: float4 7.5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 10%; left: -140px; animation: float5 6.8s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 20%; left: -20px; animation: float1 5.3s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 30%; left: -100px; animation: float2 6.5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 40%; left: -40px; animation: float3 7.2s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 50%; left: -60px; animation: float4 5.9s ease-in-out infinite;"></div>
+      <div class="cloud cloud-xl" style="top: 60%; left: -120px; animation: float5 6.3s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 70%; left: -80px; animation: float1 7.1s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 80%; left: -50px; animation: float2 5.7s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 5%; left: -35px; animation: float3 6.9s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 90%; left: -100px; animation: float4 5.4s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 12%; left: -75px; animation: float5 6.7s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 22%; left: -45px; animation: float1 5.6s ease-in-out infinite;"></div>
+      <div class="cloud cloud-xl" style="top: 32%; left: -110px; animation: float2 6.4s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 42%; left: -65px; animation: float3 7.3s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 52%; left: -85px; animation: float4 5.8s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 72%; left: -25px; animation: float5 6.6s ease-in-out infinite;"></div>
+    </div>
+    
+    <div class="entrance-overlay-right">
+      <!-- 25 clouds on right side -->
+      <div class="cloud cloud-xl" style="top: 5%; right: -100px; animation: float1 5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 15%; right: -80px; animation: float2 6s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 25%; right: -60px; animation: float3 7s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 35%; right: -40px; animation: float4 5.5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 45%; right: -90px; animation: float5 6.5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 55%; right: -50px; animation: float1 7s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 65%; right: -30px; animation: float2 5.8s ease-in-out infinite;"></div>
+      <div class="cloud cloud-xl" style="top: 75%; right: -110px; animation: float3 6.2s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 85%; right: -70px; animation: float4 7.5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 10%; right: -140px; animation: float5 6.8s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 20%; right: -20px; animation: float1 5.3s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 30%; right: -100px; animation: float2 6.5s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 40%; right: -40px; animation: float3 7.2s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 50%; right: -60px; animation: float4 5.9s ease-in-out infinite;"></div>
+      <div class="cloud cloud-xl" style="top: 60%; right: -120px; animation: float5 6.3s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 70%; right: -80px; animation: float1 7.1s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 80%; right: -50px; animation: float2 5.7s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 5%; right: -35px; animation: float3 6.9s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 90%; right: -100px; animation: float4 5.4s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 12%; right: -75px; animation: float5 6.7s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 22%; right: -45px; animation: float1 5.6s ease-in-out infinite;"></div>
+      <div class="cloud cloud-xl" style="top: 32%; right: -110px; animation: float2 6.4s ease-in-out infinite;"></div>
+      <div class="cloud cloud-lg" style="top: 42%; right: -65px; animation: float3 7.3s ease-in-out infinite;"></div>
+      <div class="cloud cloud-md" style="top: 52%; right: -85px; animation: float4 5.8s ease-in-out infinite;"></div>
+      <div class="cloud cloud-sm" style="top: 72%; right: -25px; animation: float5 6.6s ease-in-out infinite;"></div>
+    </div>
+  </div>
+
+  <!-- SPLINE BACKGROUND -->
+  <div class="spline-bg">
+    <iframe src="https://my.spline.design/orb-N6v9mqNYBtkJ5SYl63z0MIwB/"></iframe>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">John Defensor</a>
+
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html#hero">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+
+          <li class="nav-item"><a class="nav-link" href="index.html#education">Education</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="tour.html">Tour</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section id="tour-hero" class="container">
+    <div class="text-center w-100">
+      <h1 class="tour-hero-title reveal" data-direction="left">
+        Educational Tour Journal
+      </h1>
+      <p class="tour-hero-sub reveal" data-direction="left">
+        Cebu & Bohol Adventure — 4 Days of Exploration and Learning
+      </p>
+    </div>
+  </section>
+
+  <!-- JOURNAL BOOK SECTION -->
+  <section id="journal-book" class="container">
+    <div class="journal-header reveal" data-direction="left">
+      <h2 class="book-section-title">
+        <i class="fas fa-book" style="margin-right: 12px;"></i>Educational Tour Journal
+      </h2>
+      <p class="journal-subtitle">Cebu & Bohol Adventure — 4 Days of Exploration and Learning</p>
+    </div>
+
+    <div class="book-images-grid">
+      <!-- Journal Book Image 1 -->
+      <div class="book-image-card reveal" data-direction="left">
+        <img src="journal1.jpg" alt="Journal Book - Page 1">
+      </div>
+
+      <!-- Journal Book Image 2 -->
+      <div class="book-image-card reveal" data-direction="left">
+        <img src="journal2.jpg" alt="Journal Book - Page 2">
+      </div>
+
+      <!-- Journal Book Image 3 -->
+      <div class="book-image-card reveal" data-direction="right">
+        <img src="journal3.jpg" alt="Journal Book - Page 3">
+      </div>
+
+      <!-- Journal Book Image 4 -->
+      <div class="book-image-card reveal" data-direction="right">
+        <img src="journal4.jpg" alt="Journal Book - Page 4">
+      </div>
+    </div>
+  </section>
+
+  <!-- TOUR DAYS SECTION -->
+  <section id="tour-days" class="container">
+    <h2 class="days-title reveal" data-direction="left">
+      <i class="fas fa-calendar-days" style="margin-right: 12px;"></i>Tour Days Breakdown
+    </h2>
+
+    <!-- DAY 1 - CEBU -->
+    <div class="day-card reveal" data-direction="left">
+      <span class="day-number">DAY 1</span>
+      <h3>Cebu — First Day of Exploration</h3>
+      <p>
+        Our educational tour began in Cebu with excitement and anticipation. We explored the vibrant tech industry, visited innovation hubs, and learned about the evolving landscape of IT and digital design in one of the Philippines' most progressive cities.
+      </p>
+      
+      <div class="day-highlights">
+        <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
+        <ul>
+          <li>Discovered how modern IT companies structure their workflows and collaboration strategies</li>
+          <li>Observed real-world applications of UI/UX design in enterprise solutions</li>
+          <li>Learned about the latest trends in frontend and backend development practices</li>
+          <li>Gained insights into career pathways within the tech industry</li>
+        </ul>
+      </div>
+
+      <div class="day-images">
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal1">
+          <img src="day1_pic1.jpg" alt="Day 1 - Photo 1">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal2">
+          <img src="day1_pic2.jpg" alt="Day 1 - Photo 2">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal3">
+          <img src="day1_pic3.jpg" alt="Day 1 - Photo 3">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal4">
+          <img src="day1_pic4.jpg" alt="Day 1 - Photo 4">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal5">
+          <img src="day1_pic5.jpg" alt="Day 1 - Photo 5">
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2 - CEBU -->
+    <div class="day-card reveal" data-direction="right">
+      <span class="day-number">DAY 2</span>
+      <h3>Cebu — Deeper Immersion</h3>
+      <p>
+        On the second day, we continued our exploration of Cebu's digital landscape. We engaged with more companies, participated in hands-on sessions, and gained deeper insights into web development, mobile app creation, and the future of technology in the Philippines.
+      </p>
+      
+      <div class="day-highlights">
+        <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
+        <ul>
+          <li>Understood the importance of responsive design and cross-platform compatibility</li>
+          <li>Learned practical coding techniques and best practices from industry professionals</li>
+          <li>Observed how companies implement agile methodology and project management</li>
+          <li>Gained knowledge about emerging technologies like AI and machine learning applications</li>
+        </ul>
+      </div>
+
+      <div class="day-images">
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal6">
+          <img src="day2_pic1.jpg" alt="Day 2 - Photo 1">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal7">
+          <img src="day2_pic2.jpg" alt="Day 2 - Photo 2">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal8">
+          <img src="day2_pic3.jpg" alt="Day 2 - Photo 3">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal9">
+          <img src="day2_pic4.jpg" alt="Day 2 - Photo 4">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal10">
+          <img src="day2_pic5.jpg" alt="Day 2 - Photo 5">
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 - CEBU -->
+    <div class="day-card reveal" data-direction="left">
+      <span class="day-number">DAY 3</span>
+      <h3>Cebu — Final Day & Reflections</h3>
+      <p>
+        The third day in Cebu marked the culmination of our IT exploration. We reflected on all we had learned, participated in concluding sessions, and prepared for our journey to Bohol. The experience strengthened our understanding of modern tech practices.
+      </p>
+      
+      <div class="day-highlights">
+        <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
+        <ul>
+          <li>Recognized the value of continuous learning and professional development in tech</li>
+          <li>Understood how innovation drives competitive advantage in the digital market</li>
+          <li>Observed successful strategies for scaling startups and tech companies</li>
+          <li>Learned about the importance of networking and building professional relationships</li>
+        </ul>
+      </div>
+
+      <div class="day-images">
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal11">
+          <img src="day3_pic1.jpg" alt="Day 3 - Photo 1">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal12">
+          <img src="day3_pic2.jpg" alt="Day 3 - Photo 2">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal13">
+          <img src="day3_pic3.jpg" alt="Day 3 - Photo 3">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal14">
+          <img src="day3_pic4.jpg" alt="Day 3 - Photo 4">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal15">
+          <img src="day3_pic5.jpg" alt="Day 3 - Photo 5">
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 4 - BOHOL -->
+    <div class="day-card reveal" data-direction="right">
+      <span class="day-number">DAY 4</span>
+      <h3>Bohol — Cultural & Natural Experience</h3>
+      <p>
+        The final day took us to beautiful Bohol, where we experienced the island's natural wonders and cultural heritage. From the iconic Chocolate Hills to local communities, we gained a holistic perspective on development, sustainability, and the importance of technology in rural areas.
+      </p>
+      
+      <div class="day-highlights">
+        <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
+        <ul>
+          <li>Observed how technology can bridge the gap between urban and rural development</li>
+          <li>Learned about sustainable practices and eco-friendly tech solutions</li>
+          <li>Understood the cultural significance of tourism and local communities</li>
+          <li>Gained perspective on how education and technology can empower rural areas</li>
+        </ul>
+      </div>
+
+      <div class="day-images">
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal16">
+          <img src="day4_pic1.jpg" alt="Day 4 - Photo 1">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal17">
+          <img src="day4_pic2.jpg" alt="Day 4 - Photo 2">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal18">
+          <img src="day4_pic3.jpg" alt="Day 4 - Photo 3">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal19">
+          <img src="day4_pic4.jpg" alt="Day 4 - Photo 4">
+        </div>
+        <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal20">
+          <img src="day4_pic5.jpg" alt="Day 4 - Photo 5">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY SECTION -->
+  <section id="tour-gallery" class="container">
+    <h2 class="gallery-title reveal" data-direction="left">
+      <i class="fas fa-images" style="margin-right: 12px;"></i>Photo Gallery
+    </h2>
+
+    <div class="gallery-grid">
+      <!-- Gallery Image 1 -->
+      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal1">
+        <img src="gallery1.jpg" alt="Gallery 1">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 2 -->
+      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal2">
+        <img src="gallery2.jpg" alt="Gallery 2">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 3 -->
+      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal3">
+        <img src="gallery3.jpg" alt="Gallery 3">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 4 -->
+      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal4">
+        <img src="gallery4.jpg" alt="Gallery 4">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 5 -->
+      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal5">
+        <img src="gallery5.jpg" alt="Gallery 5">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 6 -->
+      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal6">
+        <img src="gallery6.jpg" alt="Gallery 6">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 7 -->
+      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal7">
+        <img src="gallery7.jpg" alt="Gallery 7">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 8 -->
+      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal8">
+        <img src="gallery8.jpg" alt="Gallery 8">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 9 -->
+      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal9">
+        <img src="gallery9.jpg" alt="Gallery 9">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 10 -->
+      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal10">
+        <img src="gallery10.jpg" alt="Gallery 10">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 11 -->
+      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal11">
+        <img src="gallery11.jpg" alt="Gallery 11">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 12 -->
+      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal12">
+        <img src="gallery12.jpg" alt="Gallery 12">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 13 -->
+      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal13">
+        <img src="gallery13.jpg" alt="Gallery 13">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 14 -->
+      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal14">
+        <img src="gallery14.jpg" alt="Gallery 14">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <!-- Gallery Image 15 -->
+      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal15">
+        <img src="gallery15.jpg" alt="Gallery 15">
+        <div class="gallery-overlay">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="text-center" style="padding: 25px 0; margin-top: 60px; background: rgba(255,255,255,0.03); backdrop-filter: blur(8px);">
+    <p>© 2025 John Defensor — Educational Tour 2025 — All Rights Reserved</p>
+  </footer>
+
+  <!-- MODALS FOR GALLERY IMAGES -->
+  
+  <!-- Modal 1 -->
+  <div class="modal fade tour-modal" id="galleryModal1" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery1.jpg" alt="Gallery Image 1">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2 -->
+  <div class="modal fade tour-modal" id="galleryModal2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery2.jpg" alt="Gallery Image 2">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3 -->
+  <div class="modal fade tour-modal" id="galleryModal3" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery3.jpg" alt="Gallery Image 3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4 -->
+  <div class="modal fade tour-modal" id="galleryModal4" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery4.jpg" alt="Gallery Image 4">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5 -->
+  <div class="modal fade tour-modal" id="galleryModal5" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery5.jpg" alt="Gallery Image 5">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6 -->
+  <div class="modal fade tour-modal" id="galleryModal6" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery6.jpg" alt="Gallery Image 6">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 7 -->
+  <div class="modal fade tour-modal" id="galleryModal7" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery7.jpg" alt="Gallery Image 7">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 8 -->
+  <div class="modal fade tour-modal" id="galleryModal8" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery8.jpg" alt="Gallery Image 8">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 9 -->
+  <div class="modal fade tour-modal" id="galleryModal9" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery9.jpg" alt="Gallery Image 9">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 10 -->
+  <div class="modal fade tour-modal" id="galleryModal10" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery10.jpg" alt="Gallery Image 10">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 11 -->
+  <div class="modal fade tour-modal" id="galleryModal11" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery11.jpg" alt="Gallery Image 11">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 12 -->
+  <div class="modal fade tour-modal" id="galleryModal12" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery12.jpg" alt="Gallery Image 12">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 13 -->
+  <div class="modal fade tour-modal" id="galleryModal13" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery13.jpg" alt="Gallery Image 13">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 14 -->
+  <div class="modal fade tour-modal" id="galleryModal14" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery14.jpg" alt="Gallery Image 14">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 15 -->
+  <div class="modal fade tour-modal" id="galleryModal15" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="gallery15.jpg" alt="Gallery Image 15">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 16 -->
+  <div class="modal fade tour-modal" id="galleryModal16" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="day4_pic1.jpg" alt="Day 4 - Photo 1">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 17 -->
+  <div class="modal fade tour-modal" id="galleryModal17" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="day4_pic2.jpg" alt="Day 4 - Photo 2">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 18 -->
+  <div class="modal fade tour-modal" id="galleryModal18" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="day4_pic3.jpg" alt="Day 4 - Photo 3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 19 -->
+  <div class="modal fade tour-modal" id="galleryModal19" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="day4_pic4.jpg" alt="Day 4 - Photo 4">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 20 -->
+  <div class="modal fade tour-modal" id="galleryModal20" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="day4_pic5.jpg" alt="Day 4 - Photo 5">
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // PAGE ENTRANCE ANIMATION
+    (function () {
+      const entrance = document.getElementById("entranceOverlay");
+      
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          entrance.style.pointerEvents = "none";
+        }, 1200);
+      });
+    })();
+
+    // REVEAL ON SCROLL
+    (function () {
+      const reveals = document.querySelectorAll(".reveal");
+
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      reveals.forEach((r) => obs.observe(r));
+
+      window.addEventListener("load", () => {
+        reveals.forEach((r) => {
+          if (r.getBoundingClientRect().top < window.innerHeight) {
+            r.classList.add("revealed");
+          }
+        });
+      });
+    })();
+
+    // TYPING EFFECT FOR SUBTITLE
+    (function () {
+      const text = "Cebu & Bohol Adventure — 4 Days of Exploration and Learning";
+      const element = document.querySelector(".tour-hero-sub");
+      let index = 0;
+      let isDeleting = false;
+
+      function type() {
+        if (!isDeleting) {
+          // Typing
+          if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, 50);
+          } else {
+            // Finished typing, wait before deleting
+            setTimeout(() => {
+              isDeleting = true;
+              type();
+            }, 2000);
+          }
+        } else {
+          // Deleting
+          if (index > 0) {
+            element.textContent = text.substring(0, index - 1);
+            index--;
+            setTimeout(type, 30);
+          } else {
+            // Finished deleting, wait before typing again
+            setTimeout(() => {
+              isDeleting = false;
+              type();
+            }, 500);
+          }
+        }
+      }
+
+      // Start typing when page loads
+      window.addEventListener("load", () => {
+        element.textContent = "";
+        type();
+      });
+    })();
+  </script>
+
+</body>
+</html>
