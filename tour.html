@@ -505,29 +505,139 @@
     .journal-header { text-align: center; margin-bottom: 50px; }
     .book-section-title { font-size: 2.5rem; margin-bottom: 12px; text-align: center; font-weight: 800; }
     .journal-subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin: 0; font-weight: 400; letter-spacing: 0.5px; }
+    
+    /* FLIP CARD STYLES */
     .book-images-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 25px;
       margin-bottom: 60px;
+      perspective: 1000px;
     }
+    
     .book-image-card {
+      position: relative;
+      width: 100%;
+      height: 340px;
+      cursor: pointer;
       border-radius: 18px;
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.02);
-      transition: transform .35s, box-shadow .35s;
-      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
-    .book-image-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 0 25px rgba(143,112,255,0.25);
+    
+    .book-image-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
     }
+    
+    .book-image-card.flipped .book-image-card-inner {
+      transform: rotateY(180deg);
+    }
+    
+    .book-image-card-front,
+    .book-image-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    
+    .book-image-card-front {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2;
+    }
+    
+    .book-image-card-back {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transform: rotateY(180deg);
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .book-image-card:hover .book-image-card-front,
+    .book-image-card:hover .book-image-card-back {
+      box-shadow: 0 8px 32px rgba(143,112,255,0.3);
+      border-color: rgba(143,112,255,0.3);
+    }
+    
     .book-image-card img {
       width: 100%;
-      height: 300px;
+      height: 100%;
       object-fit: cover;
-      display: block;
+      border-radius: 16px;
+    }
+    
+    .book-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.35s;
+      border-radius: 18px;
+      backdrop-filter: blur(2px);
+    }
+    
+    .book-image-card:hover .book-card-overlay {
+      opacity: 1;
+    }
+    
+    .book-card-hint {
+      font-size: 1rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      letter-spacing: 0.5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .book-card-hint i {
+      font-size: 2rem;
+      animation: swipeArrow 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes swipeArrow {
+      0%, 100% { transform: translateX(-5px); opacity: 0.7; }
+      50% { transform: translateX(5px); opacity: 1; }
+    }
+    
+    .book-journal-content {
+      text-align: center;
+      color: #fff;
+      z-index: 3;
+    }
+    
+    .book-journal-content h4 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--accent);
+    }
+    
+    .book-journal-content p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      opacity: 0.9;
+      margin: 0;
     }
 
     /* TOUR DAYS SECTION */
@@ -937,6 +1047,16 @@
   </section>
 
   <!-- JOURNAL BOOK SECTION -->
+  <style>
+    /* Journal card backgrounds: use cover images instead of <img> so alt text won't show when missing */
+    .book-images-grid { display:flex; gap:20px; flex-wrap:nowrap; justify-content:center; align-items:center; margin:30px auto; max-width:1300px; overflow-x:auto; }
+    .book-image-card { width:240px; height:260px; perspective:1000px; border-radius:14px; overflow:visible; }
+    .book-image-card-inner { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .8s ease; border-radius:14px; }
+    .book-image-card-front, .book-image-card-back { position:absolute; inset:0; backface-visibility:hidden; background-size:cover; background-position:center; border-radius:14px; }
+    .book-image-card-back { transform:rotateY(180deg); }
+    .book-image-card .book-card-overlay { position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:center; background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.3) 100%); border-radius:14px; }
+    .book-card-hint { color:#fff; padding:12px; font-size:14px; }
+  </style>
   <section id="journal-book" class="container">
     <div class="journal-header reveal" data-direction="left">
       <h2 class="book-section-title">
@@ -946,27 +1066,121 @@
     </div>
 
     <div class="book-images-grid">
-      <!-- Journal Book Image 1 -->
-      <div class="book-image-card reveal" data-direction="left">
-        <img src="journal1.jpg" alt="Journal Book - Page 1">
+      <!-- Journal Book Card 1 -->
+      <div class="book-image-card reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#journalModal1">
+          <div class="book-image-card-inner">
+            <div class="book-image-card-front" style="background-image:url('up-ceb.png');">
+      
+
+              <div class="book-card-overlay">
+                <div class="book-card-hint">
+                  <i class="fas fa-hand-pointer"></i>
+                  Flip or Click
+                </div>
+              </div>
+            </div>
+            <div class="book-image-card-back" style="background-image:url('up-journal.png');">
+              <div class="book-card-overlay">
+                <div class="book-card-hint">
+                  <i class="fas fa-magnifying-glass"></i>
+                  Click to View
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
 
-      <!-- Journal Book Image 2 -->
-      <div class="book-image-card reveal" data-direction="left">
-        <img src="journal2.jpg" alt="Journal Book - Page 2">
+      <!-- Journal Book Card 2 -->
+      <div class="book-image-card reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#journalModal2">
+        <div class="book-image-card-inner">
+          <div class="book-image-card-front" style="background-image:url('dynata.png');">
+            
+            <div class="book-card-overlay">
+              <div class="book-card-hint">
+                <i class="fas fa-hand-pointer"></i>
+                Flip or Click
+              </div>
+            </div>
+          </div>
+          <div class="book-image-card-back" style="background-image:url('dynata-journal.png');">
+            <div class="book-card-overlay">
+              <div class="book-card-hint">
+                <i class="fas fa-magnifying-glass"></i>
+                Click to View
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Journal Book Image 3 -->
-      <div class="book-image-card reveal" data-direction="right">
-        <img src="journal3.jpg" alt="Journal Book - Page 3">
+      <!-- Journal Book Card 3 -->
+      <div class="book-image-card reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#journalModal3">
+        <div class="book-image-card-inner">
+          <div class="book-image-card-front" style="background-image:url('rivant.png');">
+            <div class="book-card-overlay">
+              <div class="book-card-hint">
+                <i class="fas fa-hand-pointer"></i>
+                Flip or Click
+              </div>
+            </div>
+          </div>
+          <div class="book-image-card-back" style="background-image:url('rivan-journal.png');">
+            <div class="book-card-overlay">
+              <div class="book-card-hint">
+                <i class="fas fa-magnifying-glass"></i>
+                Click to View
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Journal Book Image 4 -->
-      <div class="book-image-card reveal" data-direction="right">
-        <img src="journal4.jpg" alt="Journal Book - Page 4">
+      <!-- Journal Book Card 4 -->
+      <div class="book-image-card reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#journalModal4">
+        <div class="book-image-card-inner">
+          <div class="book-image-card-front" style="background-image:url('mata.png');">
+            <div class="book-card-overlay">
+              <div class="book-card-hint">
+                <i class="fas fa-hand-pointer"></i>
+                Flip or Click
+              </div>
+            </div>
+          </div>
+          <div class="book-image-card-back" style="background-image:url('mata-journal.png');">
+            <div class="book-card-overlay">
+              <div class="book-card-hint">
+                <i class="fas fa-magnifying-glass"></i>
+                Click to View
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Journal Book Card 5 -->
+      <div class="book-image-card reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#journalModal5">
+        <div class="book-image-card-inner">
+          <div class="book-image-card-front" style="background-image:url('tarsier.png');">
+            <div class="book-card-overlay">
+              <div class="book-card-hint">
+                <i class="fas fa-hand-pointer"></i>
+                Flip or Click
+              </div>
+            </div>
+          </div>
+          <div class="book-image-card-back" style="background-image:url('tarsier-journal.png');">
+            <div class="book-card-overlay">
+              <div class="book-card-hint">
+                <i class="fas fa-magnifying-glass"></i>
+                Click to View
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+  
 
   <!-- TOUR DAYS SECTION -->
   <section id="tour-days" class="container">
@@ -976,294 +1190,344 @@
 
     <!-- DAY 1 - CEBU -->
     <div class="day-card reveal" data-direction="left">
-      <span class="day-number">DAY 1</span>
-      <h3>Cebu — First Day of Exploration</h3>
-      <p>
-        Our educational tour began in Cebu with excitement and anticipation. We explored the vibrant tech industry, visited innovation hubs, and learned about the evolving landscape of IT and digital design in one of the Philippines' most progressive cities.
-      </p>
-      
-      <div class="day-highlights">
-        <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
-        <ul>
-          <li>Discovered how modern IT companies structure their workflows and collaboration strategies</li>
-          <li>Observed real-world applications of UI/UX design in enterprise solutions</li>
-          <li>Learned about the latest trends in frontend and backend development practices</li>
-          <li>Gained insights into career pathways within the tech industry</li>
-        </ul>
-      </div>
+  <span class="day-number">DAY 1</span>
+  <h3>UP IT Center Cebu — First Day of Exploration</h3>
+  <p>
+    Our tour at the UP IT Center Cebu highlighted the fusion of IT, marketing, and business. We learned how tech companies integrate digital marketing strategies and develop innovative business models to drive growth in the digital economy.
+  </p>
+  
+  <div class="day-highlights">
+    <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
+    <ul>
+      <li>Explored marketing strategies in tech businesses</li>
+      <li>Learned about business models in the IT sector</li>
+      <li>Gained insights into branding and customer engagement</li>
+    </ul>
+  </div>
 
       <div class="day-images">
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal1">
-          <img src="day1_pic1.jpg" alt="Day 1 - Photo 1">
+          <img src="up1.png" alt="Day 1 - Photo 1">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal2">
-          <img src="day1_pic2.jpg" alt="Day 1 - Photo 2">
+          <img src="up3.png" alt="Day 1 - Photo 2">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal3">
-          <img src="day1_pic3.jpg" alt="Day 1 - Photo 3">
+          <img src="up2.png" alt="Day 1 - Photo 3">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal4">
-          <img src="day1_pic4.jpg" alt="Day 1 - Photo 4">
+          <img src="up1.png" alt="Day 1 - Photo 4">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal5">
-          <img src="day1_pic5.jpg" alt="Day 1 - Photo 5">
+          <img src="up2.png" alt="Day 1 - Photo 5">
         </div>
       </div>
     </div>
 
     <!-- DAY 2 - CEBU -->
     <div class="day-card reveal" data-direction="right">
-      <span class="day-number">DAY 2</span>
-      <h3>Cebu — Deeper Immersion</h3>
-      <p>
-        On the second day, we continued our exploration of Cebu's digital landscape. We engaged with more companies, participated in hands-on sessions, and gained deeper insights into web development, mobile app creation, and the future of technology in the Philippines.
-      </p>
-      
-      <div class="day-highlights">
-        <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
-        <ul>
-          <li>Understood the importance of responsive design and cross-platform compatibility</li>
-          <li>Learned practical coding techniques and best practices from industry professionals</li>
-          <li>Observed how companies implement agile methodology and project management</li>
-          <li>Gained knowledge about emerging technologies like AI and machine learning applications</li>
-        </ul>
-      </div>
+  <span class="day-number">DAY 2</span>
+  <h3>Cebu — Visit to Dynata & Rivant IT</h3>
+  <p>
+    On the second day, we visited Dynata and Rivant IT in Cebu. At Dynata, we learned about the wide range of career opportunities in IT across different fields. At Rivant IT, we focused on networking and its crucial role in modern tech infrastructure.
+  </p>
+  
+  <div class="day-highlights">
+    <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
+    <ul>
+      <li>Learned about the diverse career paths in IT at Dynata</li>
+      <li>Explored the importance of networking in tech at Rivant IT</li>
+      <li>Gained insights into network security and infrastructure management</li>
+      <li>Discovered the growing role of networking in global connectivity</li>
+    </ul>
+  </div>
 
       <div class="day-images">
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal6">
-          <img src="day2_pic1.jpg" alt="Day 2 - Photo 1">
+          <img src="dynata1.png" alt="Day 2 - Photo 1">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal7">
-          <img src="day2_pic2.jpg" alt="Day 2 - Photo 2">
+          <img src="dynata2.png" alt="Day 2 - Photo 2">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal8">
-          <img src="day2_pic3.jpg" alt="Day 2 - Photo 3">
+          <img src="dynata3.png" alt="Day 2 - Photo 3">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal9">
-          <img src="day2_pic4.jpg" alt="Day 2 - Photo 4">
+          <img src="rivant1.png" alt="Day 2 - Photo 4">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal10">
-          <img src="day2_pic5.jpg" alt="Day 2 - Photo 5">
+          <img src="rivant2.png" alt="Day 2 - Photo 5">
         </div>
       </div>
     </div>
 
     <!-- DAY 3 - CEBU -->
     <div class="day-card reveal" data-direction="left">
-      <span class="day-number">DAY 3</span>
-      <h3>Cebu — Final Day & Reflections</h3>
-      <p>
-        The third day in Cebu marked the culmination of our IT exploration. We reflected on all we had learned, participated in concluding sessions, and prepared for our journey to Bohol. The experience strengthened our understanding of modern tech practices.
-      </p>
-      
-      <div class="day-highlights">
-        <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
-        <ul>
-          <li>Recognized the value of continuous learning and professional development in tech</li>
-          <li>Understood how innovation drives competitive advantage in the digital market</li>
-          <li>Observed successful strategies for scaling startups and tech companies</li>
-          <li>Learned about the importance of networking and building professional relationships</li>
-        </ul>
-      </div>
+  <span class="day-number">DAY 3</span>
+  <h3>Cebu — Mata Technologies</h3>
+  <p>
+    On the third day, we visited Mata Technologies, where we explored the fascinating world of virtual tours and 360-degree technology. We saw how these innovations are transforming industries like real estate, tourism, and education. The experience wrapped up our exploration in Cebu, emphasizing the role of immersive technologies in shaping the future.
+  </p>
+  
+  <div class="day-highlights">
+    <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
+    <ul>
+      <li>Discovered the power of virtual tours and 360-degree technology in various industries</li>
+      <li>Learned how immersive experiences are enhancing customer engagement and business opportunities</li>
+      <li>Explored how Mata Technologies is pushing the boundaries of virtual reality applications</li>
+      <li>Understood the growing demand for virtual solutions in the global market</li>
+    </ul>
+  </div>
 
       <div class="day-images">
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal11">
-          <img src="day3_pic1.jpg" alt="Day 3 - Photo 1">
+          <img src="mata1.png" alt="Day 3 - Photo 1">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal12">
-          <img src="day3_pic2.jpg" alt="Day 3 - Photo 2">
+          <img src="mata2.png" alt="Day 3 - Photo 2">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal13">
-          <img src="day3_pic3.jpg" alt="Day 3 - Photo 3">
+          <img src="mata3.png" alt="Day 3 - Photo 3">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal14">
-          <img src="day3_pic4.jpg" alt="Day 3 - Photo 4">
+          <img src="mata4.png" alt="Day 3 - Photo 4">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal15">
-          <img src="day3_pic5.jpg" alt="Day 3 - Photo 5">
+          <img src="mata5.png" alt="Day 3 - Photo 5">
         </div>
       </div>
     </div>
 
     <!-- DAY 4 - BOHOL -->
     <div class="day-card reveal" data-direction="right">
-      <span class="day-number">DAY 4</span>
-      <h3>Bohol — Cultural & Natural Experience</h3>
-      <p>
-        The final day took us to beautiful Bohol, where we experienced the island's natural wonders and cultural heritage. From the iconic Chocolate Hills to local communities, we gained a holistic perspective on development, sustainability, and the importance of technology in rural areas.
-      </p>
-      
-      <div class="day-highlights">
-        <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
-        <ul>
-          <li>Observed how technology can bridge the gap between urban and rural development</li>
-          <li>Learned about sustainable practices and eco-friendly tech solutions</li>
-          <li>Understood the cultural significance of tourism and local communities</li>
-          <li>Gained perspective on how education and technology can empower rural areas</li>
-        </ul>
-      </div>
-
+  <span class="day-number">DAY 4</span>
+  <h3>Bohol — Tarsier 117 & Cultural Experience</h3>
+  <p>
+    On the final day, we visited Tarsier 117 in Bohol, where we learned about their use of CCTV systems and technologies for emergency response and location tracking. We also explored the island's natural wonders and cultural heritage, understanding how technology is being used to improve safety and efficiency in rural areas.
+  </p>
+  
+  <div class="day-highlights">
+    <h5><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Key Observations & Learnings</h5>
+    <ul>
+      <li>Learned how CCTV and emergency location systems are improving safety in rural areas</li>
+      <li>Explored how technology helps in real-time monitoring for quicker response times</li>
+      <li>Gained insights into the importance of tech in community safety and disaster preparedness</li>
+      <li>Understood how these tech solutions support sustainable development in Bohol</li>
+    </ul>
+  </div>
       <div class="day-images">
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal16">
-          <img src="day4_pic1.jpg" alt="Day 4 - Photo 1">
+          <img src="tr1.png" alt="Day 4 - Photo 1">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal17">
-          <img src="day4_pic2.jpg" alt="Day 4 - Photo 2">
+          <img src="tr2.png" alt="Day 4 - Photo 2">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal18">
-          <img src="day4_pic3.jpg" alt="Day 4 - Photo 3">
+          <img src="tr1.png" alt="Day 4 - Photo 3">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal19">
-          <img src="day4_pic4.jpg" alt="Day 4 - Photo 4">
+          <img src="tr1.png" alt="Day 4 - Photo 4">
         </div>
         <div class="day-image-thumb" data-bs-toggle="modal" data-bs-target="#galleryModal20">
-          <img src="day4_pic5.jpg" alt="Day 4 - Photo 5">
+          <img src="tr2.png" alt="Day 4 - Photo 5">
         </div>
       </div>
     </div>
   </section>
+  <!-- Modal 60 -->
+<!-- GALLERY SECTION -->
+<section id="tour-gallery" class="container">
+  <h2 class="gallery-title reveal" data-direction="left">
+    <i class="fas fa-images" style="margin-right: 12px;"></i>Photo Gallery
+  </h2>
 
-  <!-- GALLERY SECTION -->
-  <section id="tour-gallery" class="container">
-    <h2 class="gallery-title reveal" data-direction="left">
-      <i class="fas fa-images" style="margin-right: 12px;"></i>Photo Gallery
-    </h2>
-
-    <div class="gallery-grid">
-      <!-- Gallery Image 1 -->
-      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal1">
-        <img src="gallery1.jpg" alt="Gallery 1">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 2 -->
-      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal2">
-        <img src="gallery2.jpg" alt="Gallery 2">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 3 -->
-      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal3">
-        <img src="gallery3.jpg" alt="Gallery 3">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 4 -->
-      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal4">
-        <img src="gallery4.jpg" alt="Gallery 4">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 5 -->
-      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal5">
-        <img src="gallery5.jpg" alt="Gallery 5">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 6 -->
-      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal6">
-        <img src="gallery6.jpg" alt="Gallery 6">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 7 -->
-      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal7">
-        <img src="gallery7.jpg" alt="Gallery 7">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 8 -->
-      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal8">
-        <img src="gallery8.jpg" alt="Gallery 8">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 9 -->
-      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal9">
-        <img src="gallery9.jpg" alt="Gallery 9">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 10 -->
-      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal10">
-        <img src="gallery10.jpg" alt="Gallery 10">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 11 -->
-      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal11">
-        <img src="gallery11.jpg" alt="Gallery 11">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 12 -->
-      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal12">
-        <img src="gallery12.jpg" alt="Gallery 12">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 13 -->
-      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal13">
-        <img src="gallery13.jpg" alt="Gallery 13">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 14 -->
-      <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal14">
-        <img src="gallery14.jpg" alt="Gallery 14">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
-      </div>
-
-      <!-- Gallery Image 15 -->
-      <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal15">
-        <img src="gallery15.jpg" alt="Gallery 15">
-        <div class="gallery-overlay">
-          <i class="fas fa-magnifying-glass"></i>
-        </div>
+  <div class="gallery-grid">
+    <!-- Gallery Image 60 -->
+    <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal60">
+      <img src="cebu1.png" alt="Gallery 60">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
       </div>
     </div>
-  </section>
+
+    <!-- Gallery Image 61 -->
+    <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal61">
+      <img src="cebu2.png" alt="Gallery 61">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 62 -->
+    <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal62">
+      <img src="cebu3.png" alt="Gallery 62">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 63 -->
+    <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal63">
+      <img src="cebu4.png" alt="Gallery 63">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 64 -->
+    <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal64">
+      <img src="cebu5.png" alt="Gallery 64">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 65 -->
+    <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal65">
+      <img src="cebu6.png" alt="Gallery 65">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 66 -->
+    <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal66">
+      <img src="cebu7.png" alt="Gallery 66">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 67 -->
+    <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal67">
+      <img src="cebu8.png" alt="Gallery 67">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 68 -->
+    <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal68">
+      <img src="cebu9.png" alt="Gallery 68">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 69 -->
+    <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal69">
+      <img src="cebu10.png" alt="Gallery 69">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 70 -->
+    <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal70">
+      <img src="cebu11.png" alt="Gallery 70">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 71 -->
+    <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal71">
+      <img src="cebu12.png" alt="Gallery 71">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 72 -->
+    <div class="gallery-item reveal" data-direction="right" data-bs-toggle="modal" data-bs-target="#galleryModal72">
+      <img src="cebu13.png" alt="Gallery 72">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 73 -->
+    <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal73">
+      <img src="cebu14.png" alt="Gallery 73">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 74 -->
+    <div class="gallery-item reveal" data-direction="left" data-bs-toggle="modal" data-bs-target="#galleryModal74">
+      <img src="cebu15.png" alt="Gallery 74">
+      <div class="gallery-overlay">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+    </div>
+
+    <!-- Gallery Image 75 -->
+    </div>
+
+
+
 
   <!-- FOOTER -->
   <footer class="text-center" style="padding: 25px 0; margin-top: 60px; background: rgba(255,255,255,0.03); backdrop-filter: blur(8px);">
     <p>© 2025 John Defensor — Educational Tour 2025 — All Rights Reserved</p>
   </footer>
 
+  <!-- JOURNAL FLIP CARD MODALS -->
+  
+  <!-- Journal Modal 1 -->
+  <div class="modal fade tour-modal" id="journalModal1" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="up-journal.png" alt="Journal Book - Page 1">
+      </div>
+    </div>
+  </div>
+
+  <!-- Journal Modal 5 -->
+  
+
+  <!-- Journal Modal 2 -->
+  <div class="modal fade tour-modal" id="journalModal2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="dynata-journal.png" alt="Journal Book - Page 2">
+      </div>
+    </div>
+  </div>
+
+  <!-- Journal Modal 3 -->
+  <div class="modal fade tour-modal" id="journalModal3" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="rivan-journal.png" alt="Journal Book - Page 3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Journal Modal 4 -->
+  <div class="modal fade tour-modal" id="journalModal4" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="mata-journal.png" alt="Journal Book - Page 4">
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade tour-modal" id="journalModal5" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <img src="tarsier-journal.png" alt="Journal Book - Page 5">
+      </div>
+    </div>
+  </div>
   <!-- MODALS FOR GALLERY IMAGES -->
   
   <!-- Modal 1 -->
   <div class="modal fade tour-modal" id="galleryModal1" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery1.jpg" alt="Gallery Image 1">
+        <img src="up1.png" alt="Gallery Image 1">
       </div>
     </div>
   </div>
@@ -1272,7 +1536,7 @@
   <div class="modal fade tour-modal" id="galleryModal2" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery2.jpg" alt="Gallery Image 2">
+        <img src="up3.png" alt="Gallery Image 2">
       </div>
     </div>
   </div>
@@ -1281,7 +1545,7 @@
   <div class="modal fade tour-modal" id="galleryModal3" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery3.jpg" alt="Gallery Image 3">
+        <img src="up2.png" alt="Gallery Image 3">
       </div>
     </div>
   </div>
@@ -1290,7 +1554,7 @@
   <div class="modal fade tour-modal" id="galleryModal4" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery4.jpg" alt="Gallery Image 4">
+        <img src="up1.png" alt="Gallery Image 4">
       </div>
     </div>
   </div>
@@ -1299,7 +1563,7 @@
   <div class="modal fade tour-modal" id="galleryModal5" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery5.jpg" alt="Gallery Image 5">
+        <img src="up2.png" alt="Gallery Image 5">
       </div>
     </div>
   </div>
@@ -1308,7 +1572,7 @@
   <div class="modal fade tour-modal" id="galleryModal6" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery6.jpg" alt="Gallery Image 6">
+        <img src="dynata1.png" alt="Gallery Image 6">
       </div>
     </div>
   </div>
@@ -1317,7 +1581,7 @@
   <div class="modal fade tour-modal" id="galleryModal7" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery7.jpg" alt="Gallery Image 7">
+        <img src="dynata2.png"Gallery Image 7">
       </div>
     </div>
   </div>
@@ -1326,7 +1590,7 @@
   <div class="modal fade tour-modal" id="galleryModal8" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery8.jpg" alt="Gallery Image 8">
+        <img src="dynata3.png" alt="Gallery Image 8">
       </div>
     </div>
   </div>
@@ -1335,7 +1599,7 @@
   <div class="modal fade tour-modal" id="galleryModal9" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery9.jpg" alt="Gallery Image 9">
+        <img src="rivant1.png" alt="Gallery Image 9">
       </div>
     </div>
   </div>
@@ -1344,7 +1608,7 @@
   <div class="modal fade tour-modal" id="galleryModal10" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery10.jpg" alt="Gallery Image 10">
+        <img src="rivant2.png" alt="Gallery Image 10">
       </div>
     </div>
   </div>
@@ -1353,7 +1617,7 @@
   <div class="modal fade tour-modal" id="galleryModal11" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery11.jpg" alt="Gallery Image 11">
+        <img src="mata1.png" alt="Gallery Image 11">
       </div>
     </div>
   </div>
@@ -1362,7 +1626,7 @@
   <div class="modal fade tour-modal" id="galleryModal12" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery12.jpg" alt="Gallery Image 12">
+        <img src="mata2.png" alt="Gallery Image 12">
       </div>
     </div>
   </div>
@@ -1371,7 +1635,7 @@
   <div class="modal fade tour-modal" id="galleryModal13" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery13.jpg" alt="Gallery Image 13">
+        <img src="mata3.png" alt="Gallery Image 13">
       </div>
     </div>
   </div>
@@ -1380,7 +1644,7 @@
   <div class="modal fade tour-modal" id="galleryModal14" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery14.jpg" alt="Gallery Image 14">
+        <img src="mata4.png" alt="Gallery Image 14">
       </div>
     </div>
   </div>
@@ -1389,7 +1653,7 @@
   <div class="modal fade tour-modal" id="galleryModal15" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="gallery15.jpg" alt="Gallery Image 15">
+        <img src="mata5.png" alt="Gallery Image 15">
       </div>
     </div>
   </div>
@@ -1398,7 +1662,7 @@
   <div class="modal fade tour-modal" id="galleryModal16" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="day4_pic1.jpg" alt="Day 4 - Photo 1">
+        <img src="tr1.png" alt="Day 4 - Photo 1">
       </div>
     </div>
   </div>
@@ -1407,7 +1671,7 @@
   <div class="modal fade tour-modal" id="galleryModal17" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="day4_pic2.jpg" alt="Day 4 - Photo 2">
+        <img src="tr2.png" alt="Day 4 - Photo 2">
       </div>
     </div>
   </div>
@@ -1416,7 +1680,7 @@
   <div class="modal fade tour-modal" id="galleryModal18" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="day4_pic3.jpg" alt="Day 4 - Photo 3">
+        <img src="tr1.png" alt="Day 4 - Photo 3">
       </div>
     </div>
   </div>
@@ -1425,7 +1689,7 @@
   <div class="modal fade tour-modal" id="galleryModal19" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="day4_pic4.jpg" alt="Day 4 - Photo 4">
+        <img src="tr1.png" alt="Day 4 - Photo 4">
       </div>
     </div>
   </div>
@@ -1434,7 +1698,7 @@
   <div class="modal fade tour-modal" id="galleryModal20" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-transparent border-0">
-        <img src="day4_pic5.jpg" alt="Day 4 - Photo 5">
+        <img src="tr2.png" alt="Day 4 - Photo 5">
       </div>
     </div>
   </div>
@@ -1520,6 +1784,25 @@
       window.addEventListener("load", () => {
         element.textContent = "";
         type();
+      });
+    })();
+
+    // FLIP CARD FUNCTIONALITY
+    (function () {
+      const cards = document.querySelectorAll(".book-image-card");
+
+      cards.forEach((card) => {
+        card.addEventListener("click", function (e) {
+          e.stopPropagation();
+          this.classList.toggle("flipped");
+        });
+      });
+
+      // Close on outside click
+      document.addEventListener("click", () => {
+        cards.forEach((card) => {
+          card.classList.remove("flipped");
+        });
       });
     })();
   </script>

@@ -201,6 +201,10 @@
   .portfolio-item { position:relative; border-radius:20px; overflow:hidden; transition:.25s; }
   .portfolio-item img { width:100%; display:block; border-radius:15px; }
 
+  /* Project language icons under project descriptions */
+  .project-icons { display:flex; gap:12px; align-items:center; margin-top:12px; }
+  .project-icons i { font-size:20px; color:var(--accent); }
+
   /* EDUCATION */
   #education { padding:60px 0; }
   /* Education Card Fix */
@@ -434,6 +438,7 @@ img {
     color: white;
     border-radius: 0;
     padding: 12px;
+    margin-top: 80px;
   }
   .contact-form input::placeholder, .contact-form textarea::placeholder {
     color: rgba(255,255,255,0.5);
@@ -674,7 +679,7 @@ img {
     </div>
   </div>
 <section id="certificates" class="container my-5">
-  <h2 class="text-center mb-4">Certificates</h2>
+  <h2 class="text-center mb-4" style="margin-top: 200px;">Certificates</h2>
 
   <div class="row g-4">
 
@@ -731,6 +736,28 @@ img {
       </div>
     </div>
 
+    <!-- Honor Certificate 1 -->
+    <div class="col-md-4">
+      <div class="cert-card" data-bs-toggle="modal" data-bs-target="#honor1Modal" style="cursor:pointer;">
+        <img src="third.png" class="img-fluid cert-img" alt="School Honor Certificate 1">
+        <h6 class="mt-2 text-center">School Honor</h6>
+      </div>
+    </div>
+
+    <!-- Honor Certificate 2 -->
+    <div class="col-md-4">
+      <div class="cert-card" data-bs-toggle="modal" data-bs-target="#honor2Modal" style="cursor:pointer;">
+        <img src="1st.png" class="img-fluid cert-img" alt="School Honor Certificate 2">
+        <h6 class="mt-2 text-center">School Honor</h6>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="cert-card" data-bs-toggle="modal" data-bs-target="#honor3Modal" style="cursor:pointer;">
+        <img src="pe-day.png" class="img-fluid cert-img" alt="School Honor Certificate 2">
+        <h6 class="mt-2 text-center">P.E Award</h6>
+      </div>
+    </div>
+
 </section>
 
 
@@ -740,7 +767,7 @@ img {
 
   <!-- EDUCATION -->
 <section id="education" class="container my-5">
-  <h2 class="text-center mb-4 reveal" data-direction="left">Education</h2>
+  <h2 class="text-center mb-4 reveal" style="margin-top: 150px;"data-direction="left">Education</h2>
 
   <div class="row g-4">
 
@@ -784,20 +811,28 @@ img {
 
   <!-- PORTFOLIO -->
   <section id="projects" class="container my-5">
-    <h2 class="text-center mb-4 reveal" data-direction="left">Projects</h2>
+    <h2 class="text-center mb-4 reveal" style="margin-top: 120px;" data-direction="left">Projects</h2>
 
     <div class="row g-4">
 
       <div class="col-md-4 reveal" data-direction="left">
         <div class="portfolio-item">
           <div class="image-wrapper position-relative">
-            <a href="https://digicoprjct2.vercel.app/" target="_blank">
-              <img src="pic1.png" class="img-fluid" alt="">
+            <a href="https://crusader-merch-hub.page.gd/login.php" target="_blank">
+              <img src="hcdc.png" class="img-fluid" alt="">
            
             </a>
           </div>
-          <h5 class="mt-3">Project One</h5>
-          <p>Modern responsive website</p>
+          <h5 class="mt-3">HCDC MERCH HUB</h5>
+          <p>A responsive e-commerce platform for buying and selling official school merchandise, 
+            providing a seamless shopping experience for students and staff."</p>
+          <div class="project-icons d-flex justify-content-center gap-3" aria-hidden="true">
+            <i class="fab fa-html5"></i>
+            <i class="fab fa-css3-alt"></i>
+            <i class="fab fa-js-square"></i>
+            <i class="fab fa-php"></i>
+            <i class="fas fa-database"></i>
+          </div>
         </div>
       </div>
 
@@ -809,8 +844,14 @@ img {
              
             </a>
           </div>
-          <h5 class="mt-3">Project Two</h5>
-          <p>UI/UX design showcase</p>
+          <h5 class="mt-3">Pet Adoption Platform</h5>
+          <p>A user-centric UI/UX design showcase for a pet adoption website, 
+            focused on providing a seamless and engaging experience for users looking to adopt pets</p>
+          <div class="project-icons d-flex justify-content-center gap-3" aria-hidden="true">
+            <i class="fab fa-html5"></i>
+            <i class="fab fa-css3-alt"></i>
+            <i class="fab fa-js-square"></i>
+          </div>
         </div>
       </div>
 
@@ -822,8 +863,14 @@ img {
              
             </a>
           </div>
-          <h5 class="mt-3">Project Three</h5>
-          <p>App development project</p>
+          <h5 class="mt-3">E-commerce Website</h5>
+          <p>A development project for an e-commerce platform, featuring a sleek design for promoting and selling products, 
+            with a focus on seamless shopping and great user experience.</p>
+          <div class="project-icons d-flex justify-content-center gap-3" aria-hidden="true">
+            <i class="fab fa-html5"></i>
+            <i class="fab fa-css3-alt"></i>
+            <i class="fab fa-js-square"></i>
+          </div>
         </div>
       </div>
 
@@ -832,7 +879,8 @@ img {
 
   <!-- CONTACT -->
   <section id="contact" class="container my-5">
-    <h2 class="text-center mb-4 reveal" data-direction="left">Get In Touch</h2>
+    <h2 class="text-center mb-4 reveal" style="margin-top: 300px;" data-direction="left">Get In Touch</h2>
+
 
     <div class="row justify-content-center">
       <div class="col-lg-8">
@@ -935,6 +983,31 @@ img {
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-transparent border-0">
       <img src="network.png" alt="Network Certificate">
+    </div>
+  </div>
+</div>
+
+<!-- Honor Certificate 1 Modal -->
+<div class="modal fade certificate-modal" id="honor1Modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <img src="third.png" alt="School Honor Certificate 1">
+    </div>
+  </div>
+</div>
+
+<!-- Honor Certificate 2 Modal -->
+<div class="modal fade certificate-modal" id="honor2Modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <img src="1st.png" alt="School Honor Certificate 2">
+    </div>
+  </div>
+</div>
+<div class="modal fade certificate-modal" id="honor3Modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <img src="pe-day.png" alt="School Honor Certificate 3">
     </div>
   </div>
 </div>
